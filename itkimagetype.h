@@ -1,6 +1,9 @@
 #ifndef ITKIMAGETYPE_H
 #define ITKIMAGETYPE_H
-//define the medical iamge type and itk image to vtk image type
+/*
+ *
+ * define the medical iamge type and itk image to vtk image type
+ */
 #include <itkImage.h>
 #include <itkImageFileReader.h>
 #include <itkImageToVTKImageFilter.h>
