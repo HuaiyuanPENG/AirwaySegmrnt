@@ -1,3 +1,4 @@
+*.ui.autosave
 CMakeCache.txt
 CMakeFiles
 CMakeScripts
