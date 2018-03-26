@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "contrastadujestdialog.h"
 
 #include <QMenu>
 #include <QFileDialog>
@@ -68,6 +69,7 @@ void MainWindow::on_actionOpen_File_triggered()
     m_pImageViewer[0]->SetSliceOrientationToXY();
     m_pImageViewer[0]->SetInputData(image);
     m_pImageViewer[0]->SetSlice(m_pImageViewer[0]->GetSliceMax()/2);
+    m_pImageViewer[0]->SliceScrollOnMouseWheelOff(); //关掉滑动鼠标滚轮切换slice的操作
     ui->HorizontalWindow->update();
 
     ui->CoronalWindow->SetRenderWindow(m_pImageViewer[1]->GetRenderWindow());
@@ -84,4 +86,20 @@ void MainWindow::on_actionOpen_File_triggered()
     m_pImageViewer[2]->SetSlice(m_pImageViewer[2]->GetSliceMax()/2);
     ui->SagittalWindow->update();
 
+}
+
+//接收窗位对话框传回的值，并设置显示
+void MainWindow::receiveWindow(float w, float l)
+{
+    for(int i = 0; i < 3; i++){
+        m_pImageViewer[i]->SetColorLevel(l);
+        m_pImageViewer[i]->SetColorWindow(w);
+    }
+}
+
+//打开调整窗宽窗位对话框，连接槽函数
+void MainWindow::on_actionContrast_Adjustment_triggered()
+{
+    ContrastAdujestDialog * cad = new ContrastAdujestDialog;
+    QObject::connect(cad, SIGNAL(sentWindowLevel(float, float)), this, SLOT(receiveWindow(float, float)));
 }

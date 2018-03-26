@@ -11,6 +11,9 @@ endif()
 if(POLICY CMP0053)
   cmake_policy(SET CMP0053 NEW) # CMake 3.1
 endif()
+if(POLICY CMP0071)
+  cmake_policy(SET CMP0071 NEW) # CMake 3.10
+endif()
 
 project(AirwaySegment)
 
@@ -34,18 +37,17 @@ if("${VTK_QT_VERSION}" STREQUAL "")
   message(FATAL_ERROR "VTK was not built with Qt")
 endif()
 
-set( Srcs main.cpp mainwindow.cpp )
-set( Hdrs mainwindow.h itkImagetype.h)
-set( MOC_Hdrs mainwindow.h )
-set(UIs mainwindow.ui )
+set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp)
+set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h)
+set( MOC_Hdrs mainwindow.h contrastadujestdialog.h)
+set(UIs mainwindow.ui contrastadujestdialog.ui)
 
 include_directories(
   ${CMAKE_CURRENT_BINARY_DIR}
   ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-set(CMAKE_AUTOMOC ON)
-
+set( CMAKE_AUTOMOC ON )
 
 if(VTK_QT_VERSION VERSION_GREATER "4")
     FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED QUIET)

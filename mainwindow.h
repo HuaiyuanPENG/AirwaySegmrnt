@@ -25,7 +25,12 @@ public:
     ~MainWindow();
 
 private slots:
+    //调整窗口窗位和窗宽
+    void on_actionContrast_Adjustment_triggered();
+
     void on_actionOpen_File_triggered();
+
+    void receiveWindow(float w, float l);
 
 private:
     Ui::MainWindow *ui;
