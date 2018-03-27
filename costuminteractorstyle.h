@@ -1,6 +1,10 @@
 #ifndef COSTUMINTERACTORSTYLE_H
 #define COSTUMINTERACTORSTYLE_H
 
+/*
+ * 自定义交互模式
+ * 可选的继承基类是vtkInteractorStyle 和vtkInteractorStyleTrackball
+ */
 
 class CostumInteractorStyle : public vtkInteractorStyle
 {

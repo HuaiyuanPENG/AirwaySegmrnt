@@ -37,8 +37,8 @@ if("${VTK_QT_VERSION}" STREQUAL "")
   message(FATAL_ERROR "VTK was not built with Qt")
 endif()
 
-set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp)
-set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h)
+set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp costuminteractorstyle.cpp)
+set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h costuminteractorstyle.h)
 set( MOC_Hdrs mainwindow.h contrastadujestdialog.h)
 set(UIs mainwindow.ui contrastadujestdialog.ui)
 
