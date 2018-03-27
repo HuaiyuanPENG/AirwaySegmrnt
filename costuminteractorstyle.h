@@ -6,6 +6,9 @@
  * 可选的继承基类是vtkInteractorStyle 和vtkInteractorStyleTrackball
  */
 
+#include <vtkInteractorStyle.h>
+
+
 class CostumInteractorStyle : public vtkInteractorStyle
 {
 public:

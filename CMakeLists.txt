@@ -36,9 +36,10 @@ INCLUDE(${VTK_USE_FILE})
 if("${VTK_QT_VERSION}" STREQUAL "")
   message(FATAL_ERROR "VTK was not built with Qt")
 endif()
+#costuminteractorstyle.cpp costuminteractorstyle.h
 
-set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp costuminteractorstyle.cpp)
-set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h costuminteractorstyle.h)
+set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp )
+set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h )
 set( MOC_Hdrs mainwindow.h contrastadujestdialog.h)
 set(UIs mainwindow.ui contrastadujestdialog.ui)
 
@@ -53,7 +54,7 @@ if(VTK_QT_VERSION VERSION_GREATER "4")
     FIND_PACKAGE(Qt5 COMPONENTS Widgets REQUIRED QUIET)
     qt5_wrap_ui(UI_Srcs ${UIs})
 
-    add_executable(${PROJECT_NAME} ${Srcs} ${Hdrs} ${UI_Srcs} ${MOC_Hdrs})
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${Srcs} ${Hdrs} ${UI_Srcs} ${MOC_Hdrs})
     qt5_use_modules(${PROJECT_NAME} Core Gui Widgets)
     target_link_libraries(${PROJECT_NAME} ${VTK_LIBRARIES} ${ITK_LIBRARIES})
 else()
@@ -65,7 +66,7 @@ else()
     set(QT_UIC_EXECUTABLE ${VTK_QT_UIC_EXECUTABLE} CACHE FILEPATH "")
     qt4_wrap_ui(UI_Srcs ${UIs})
 
-    add_executable(${PROJECT_NAME} ${Srcs} ${Hdrs} ${UI_Srcs} ${MOC_Hdrs})
+    add_executable(${PROJECT_NAME} MACOSX_BUNDLE ${Srcs} ${Hdrs} ${UI_Srcs} ${MOC_Hdrs})
     target_link_libraries(${PROJECT_NAME} ${QT_LIBRARIES} ${VTK_LIBRARIES} ${ITK_LIBRARIES})
 endif()
 

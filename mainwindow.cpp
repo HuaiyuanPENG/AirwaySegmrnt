@@ -15,6 +15,12 @@
 #include <vtkResliceImageViewer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkCamera.h>
+#include <vtkResliceCursorLineRepresentation.h>
+#include <vtkResliceCursorThickLineRepresentation.h>
+#include <vtkResliceCursorWidget.h>
+#include <vtkResliceCursorActor.h>
+#include <vtkResliceCursorPolyDataAlgorithm.h>
+#include <vtkResliceCursor.h>
 
 #include "itkimagetype.h"
 
@@ -64,27 +70,40 @@ void MainWindow::on_actionOpen_File_triggered()
     vtkImageData * image = vtkImageData::New();
     image->DeepCopy(connector->GetOutput());
 
+
+
+
     ui->HorizontalWindow->SetRenderWindow(m_pImageViewer[0]->GetRenderWindow());
     m_pImageViewer[0]->SetupInteractor(ui->HorizontalWindow->GetRenderWindow()->GetInteractor());  //这一步是否有意义？
-    m_pImageViewer[0]->SetSliceOrientationToXY();
-    m_pImageViewer[0]->SetInputData(image);
-    m_pImageViewer[0]->SetSlice(m_pImageViewer[0]->GetSliceMax()/2);
-    m_pImageViewer[0]->SliceScrollOnMouseWheelOff(); //关掉滑动鼠标滚轮切换slice的操作
-    ui->HorizontalWindow->update();
+//    m_pImageViewer[0]->SetSliceOrientationToXY();
+//    m_pImageViewer[0]->SetInputData(image);
+//    m_pImageViewer[0]->SetSlice(m_pImageViewer[0]->GetSliceMax()/2);
+//    m_pImageViewer[0]->SliceScrollOnMouseWheelOff(); //关掉滑动鼠标滚轮切换slice的操作
+//    ui->HorizontalWindow->update();
 
     ui->CoronalWindow->SetRenderWindow(m_pImageViewer[1]->GetRenderWindow());
     m_pImageViewer[1]->SetupInteractor(ui->CoronalWindow->GetRenderWindow()->GetInteractor());  //这一步是否有意义？
-    m_pImageViewer[1]->SetSliceOrientationToXZ();
-    m_pImageViewer[1]->SetInputData(image);
-    m_pImageViewer[1]->SetSlice(m_pImageViewer[1]->GetSliceMax()/2);
-    ui->CoronalWindow->update();
+//    m_pImageViewer[1]->SetSliceOrientationToXZ();
+//    m_pImageViewer[1]->SetInputData(image);
+//    m_pImageViewer[1]->SetSlice(m_pImageViewer[1]->GetSliceMax()/2);
+//    ui->CoronalWindow->update();
 
     ui->SagittalWindow->SetRenderWindow(m_pImageViewer[2]->GetRenderWindow());
     m_pImageViewer[2]->SetupInteractor(ui->SagittalWindow->GetRenderWindow()->GetInteractor());  //这一步是否有意义？
-    m_pImageViewer[2]->SetSliceOrientationToYZ();
-    m_pImageViewer[2]->SetInputData(image);
-    m_pImageViewer[2]->SetSlice(m_pImageViewer[2]->GetSliceMax()/2);
-    ui->SagittalWindow->update();
+//    m_pImageViewer[2]->SetSliceOrientationToYZ();
+//    m_pImageViewer[2]->SetInputData(image);
+//    m_pImageViewer[2]->SetSlice(m_pImageViewer[2]->GetSliceMax()/2);
+//    ui->SagittalWindow->update();
+
+    for(int i = 0; i < 3; i++){
+        vtkResliceCursorLineRepresentation *rep = vtkResliceCursorLineRepresentation::SafeDownCast(
+                    m_pImageViewer[i]->GetResliceCursorWidget()->GetRepresentation());
+        m_pImageViewer[i]->SetResliceCursor(m_pImageViewer[0]->GetResliceCursor());
+        rep->GetResliceCursorActor()->GetCursorAlgorithm()->SetReslicePlaneNormal(i);
+        m_pImageViewer[i]->SetInputData(image);
+        m_pImageViewer[i]->SetSliceOrientation(i);
+        m_pImageViewer[i]->SetResliceModeToAxisAligned();
+    }
 
 }
 
