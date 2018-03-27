@@ -9,8 +9,8 @@ ContrastAdujestDialog::ContrastAdujestDialog(QWidget *parent) :
 {
     ui->setupUi(this);
     //设置输入框只能输入整数
-    ui->window->setValidator(new QRegExpValidator(QRegExp("^-\d+$")));
-    ui->level->setValidator(new QRegExpValidator(QRegExp("^-\d+$")));
+//    ui->window->setValidator(new QRegExpValidator(QRegExp("^-\d+$")));
+//    ui->level->setValidator(new QRegExpValidator(QRegExp("^-\d+$")));
 }
 
 ContrastAdujestDialog::~ContrastAdujestDialog()

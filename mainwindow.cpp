@@ -101,5 +101,6 @@ void MainWindow::receiveWindow(float w, float l)
 void MainWindow::on_actionContrast_Adjustment_triggered()
 {
     ContrastAdujestDialog * cad = new ContrastAdujestDialog;
+    cad->show();
     QObject::connect(cad, SIGNAL(sentWindowLevel(float, float)), this, SLOT(receiveWindow(float, float)));
 }
