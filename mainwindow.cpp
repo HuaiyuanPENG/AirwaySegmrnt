@@ -70,9 +70,6 @@ void MainWindow::on_actionOpen_File_triggered()
     vtkImageData * image = vtkImageData::New();
     image->DeepCopy(connector->GetOutput());
 
-
-
-
     ui->HorizontalWindow->SetRenderWindow(m_pImageViewer[0]->GetRenderWindow());
     m_pImageViewer[0]->SetupInteractor(ui->HorizontalWindow->GetRenderWindow()->GetInteractor());  //这一步是否有意义？
 //    m_pImageViewer[0]->SetSliceOrientationToXY();
@@ -104,6 +101,8 @@ void MainWindow::on_actionOpen_File_triggered()
         m_pImageViewer[i]->SetSliceOrientation(i);
         m_pImageViewer[i]->SetResliceModeToAxisAligned();
     }
+
+//    m_pImageViewer[0]->GetRenderer()->SetActiveCamera(m_pImageViewer[1]->GetRenderer()->GetActiveCamera());
 
 }
 

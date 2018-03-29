@@ -38,9 +38,9 @@ if("${VTK_QT_VERSION}" STREQUAL "")
 endif()
 #costuminteractorstyle.cpp costuminteractorstyle.h
 
-set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp )
-set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h )
-set( MOC_Hdrs mainwindow.h contrastadujestdialog.h)
+set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp)
+set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h vtkreslicecursorcallback.h)
+set( MOC_Hdrs mainwindow.h contrastadujestdialog.h )
 set(UIs mainwindow.ui contrastadujestdialog.ui)
 
 include_directories(
