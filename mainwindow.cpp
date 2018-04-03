@@ -23,7 +23,7 @@
 #include <vtkResliceCursor.h>
 
 #include "itkimagetype.h"
-
+#include "vtkreslicecursorcallback.h"
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -98,10 +98,16 @@ void MainWindow::on_actionOpen_File_triggered()
         m_pImageViewer[i]->SetResliceCursor(m_pImageViewer[0]->GetResliceCursor());
         rep->GetResliceCursorActor()->GetCursorAlgorithm()->SetReslicePlaneNormal(i);
         m_pImageViewer[i]->SetInputData(image);
-        m_pImageViewer[i]->SetSliceOrientation(i);
+        m_pImageViewer[i]->SetSliceOrientation((i+1)%3);
         m_pImageViewer[i]->SetResliceModeToAxisAligned();
     }
-
+    vtkSmartPointer<vtkResliceCursorCallback> resliceCursorCallback  = vtkSmartPointer<vtkResliceCursorCallback>::New();
+    for(int i = 0; i < 3; i++){
+        if(m_pImageViewer[i]->GetInteractor()){
+            m_pImageViewer[i]->GetResliceCursorWidget()->SetInteractor(m_pImageViewer[i]->GetInteractor());
+            m_pImageViewer[i]->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 0.5);
+        }
+    }
 //    m_pImageViewer[0]->GetRenderer()->SetActiveCamera(m_pImageViewer[1]->GetRenderer()->GetActiveCamera());
 
 }
