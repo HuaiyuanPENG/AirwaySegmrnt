@@ -24,6 +24,8 @@
 
 #include "itkimagetype.h"
 #include "vtkreslicecursorcallback.h"
+#include <QMessageBox>
+#include <costuminteractorstyle.h>
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -103,13 +105,27 @@ void MainWindow::on_actionOpen_File_triggered()
     }
     vtkSmartPointer<vtkResliceCursorCallback> resliceCursorCallback  = vtkSmartPointer<vtkResliceCursorCallback>::New();
     for(int i = 0; i < 3; i++){
+        resliceCursorCallback->Viewer[i] = m_pImageViewer[i];
+    }
+    vtkSmartPointer<CostumInteractorStyle> cosStyle[3];
+//    = vtkSmartPointer<CostumInteractorStyle>::New();
+
+    for(int i = 0; i < 3; i++){
+        cosStyle[i] = vtkSmartPointer<CostumInteractorStyle>::New();
+    }
+
+    for(int i = 0; i < 3; i++){
         if(m_pImageViewer[i]->GetInteractor()){
             m_pImageViewer[i]->GetResliceCursorWidget()->SetInteractor(m_pImageViewer[i]->GetInteractor());
-            m_pImageViewer[i]->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 0.5);
+            m_pImageViewer[i]->GetInteractor()->SetInteractorStyle(cosStyle[i]);
+//            m_pImageViewer[i]->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 1); //doesn't work
+//            m_pImageViewer[i]->GetInteractor()->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback);
+//            m_pImageViewer[i]->GetInteractor()->AddObserver(vtkCommand::MouseMoveEvent, resliceCursorCallback);
+//            m_pImageViewer[i]->GetInteractor()->Disable();
+//            m_pImageViewer[i]->GetResliceCursorWidget()->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 0.6);
         }
     }
 //    m_pImageViewer[0]->GetRenderer()->SetActiveCamera(m_pImageViewer[1]->GetRenderer()->GetActiveCamera());
-
 }
 
 //接收窗位对话框传回的值，并设置显示
@@ -124,7 +140,15 @@ void MainWindow::receiveWindow(float w, float l)
 //打开调整窗宽窗位对话框，连接槽函数
 void MainWindow::on_actionContrast_Adjustment_triggered()
 {
+
     ContrastAdujestDialog * cad = new ContrastAdujestDialog;
     cad->show();
     QObject::connect(cad, SIGNAL(sentWindowLevel(float, float)), this, SLOT(receiveWindow(float, float)));
+}
+
+void MainWindow::on_actionmessagebox_triggered()
+{
+     QMessageBox mb;
+    mb.setText("debug");
+    mb.exec();
 }

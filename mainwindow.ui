@@ -304,8 +304,15 @@
     </property>
     <addaction name="actionContrast_Adjustment"/>
    </widget>
+   <widget class="QMenu" name="menutest">
+    <property name="title">
+     <string>test</string>
+    </property>
+    <addaction name="actionmessagebox"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
+   <addaction name="menutest"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <action name="actionOpen_File">
@@ -316,6 +323,11 @@
   <action name="actionContrast_Adjustment">
    <property name="text">
     <string>Contrast Adjustment</string>
+   </property>
+  </action>
+  <action name="actionmessagebox">
+   <property name="text">
+    <string>messagebox</string>
    </property>
   </action>
  </widget>

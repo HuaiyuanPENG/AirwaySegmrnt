@@ -25,6 +25,9 @@ public:
     ~MainWindow();
 
 private slots:
+    void on_actionmessagebox_triggered();
+
+private slots:
     //调整窗口窗位和窗宽
     void on_actionContrast_Adjustment_triggered();
 
