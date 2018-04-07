@@ -105,7 +105,7 @@ void MainWindow::on_actionOpen_File_triggered()
     }
     vtkSmartPointer<vtkResliceCursorCallback> resliceCursorCallback  = vtkSmartPointer<vtkResliceCursorCallback>::New();
     for(int i = 0; i < 3; i++){
-        resliceCursorCallback->Viewer[i] = m_pImageViewer[i];
+        resliceCursorCallback->Viewers[i] = m_pImageViewer[i];
     }
     vtkSmartPointer<CostumInteractorStyle> cosStyle[3];
 //    = vtkSmartPointer<CostumInteractorStyle>::New();
@@ -119,7 +119,7 @@ void MainWindow::on_actionOpen_File_triggered()
             m_pImageViewer[i]->GetResliceCursorWidget()->SetInteractor(m_pImageViewer[i]->GetInteractor());
             m_pImageViewer[i]->GetInteractor()->SetInteractorStyle(cosStyle[i]);
 //            m_pImageViewer[i]->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 1); //doesn't work
-//            m_pImageViewer[i]->GetInteractor()->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback);
+            m_pImageViewer[i]->GetInteractor()->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback);
 //            m_pImageViewer[i]->GetInteractor()->AddObserver(vtkCommand::MouseMoveEvent, resliceCursorCallback);
 //            m_pImageViewer[i]->GetInteractor()->Disable();
 //            m_pImageViewer[i]->GetResliceCursorWidget()->AddObserver(vtkCommand::LeftButtonPressEvent, resliceCursorCallback, 0.6);
@@ -135,6 +135,12 @@ void MainWindow::receiveWindow(float w, float l)
         m_pImageViewer[i]->SetColorLevel(l);
         m_pImageViewer[i]->SetColorWindow(w);
     }
+}
+void MainWindow::showCursorPosition(int x, int y, int z, float* intensity){
+    ui->label->setText(QString::number(x));
+    ui->label_2->setText(QString::number(y));
+    ui->label_3->setText(QString::number(z));
+
 }
 
 //打开调整窗宽窗位对话框，连接槽函数

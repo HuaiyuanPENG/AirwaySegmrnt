@@ -41,7 +41,8 @@ endif()
 set( Srcs main.cpp mainwindow.cpp contrastadujestdialog.cpp
     costuminteractorstyle.cpp )
 set( Hdrs mainwindow.h itkImagetype.h contrastadujestdialog.h vtkreslicecursorcallback.h
-    costuminteractorstyle.h)
+    costuminteractorstyle.h
+    vtkToQtSignal.h)
 set( MOC_Hdrs mainwindow.h contrastadujestdialog.h )
 set(UIs mainwindow.ui contrastadujestdialog.ui)
 

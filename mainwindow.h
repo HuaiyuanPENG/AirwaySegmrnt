@@ -35,8 +35,10 @@ private slots:
 
     void receiveWindow(float w, float l);
 
+    void showCursorPosition(int x, int y, int z, float* intensity);
 private:
     Ui::MainWindow *ui;
+
     vtkSmartPointer< vtkResliceImageViewer > m_pImageViewer[3];
 };
 
