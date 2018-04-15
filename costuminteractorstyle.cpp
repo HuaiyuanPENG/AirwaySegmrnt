@@ -13,6 +13,13 @@
 #include "vtkImageSlice.h"
 #include "vtkImageMapper3D.h"
 #include "vtkImageProperty.h"
+#include <vtkAssemblyPath.h>
+#include <vtkImageData.h>
+#include <vtkImageActor.h>
+#include <vtkSmartPointer.h>
+#include <vtkPropPicker.h>
+#include <vtkRenderWindowInteractor.h>
+
 vtkStandardNewMacro(CostumInteractorStyle);
 //调用父类的构造函数，该类不做操作
 //CostumInteractorStyle::CostumInteractorStyle()
@@ -20,119 +27,87 @@ vtkStandardNewMacro(CostumInteractorStyle);
 
 //}
 
-void CostumInteractorStyle::OnMouseMove(){
-
-    int x = this->Interactor->GetEventPosition()[0];
-    int y = this->Interactor->GetEventPosition()[1];
-    switch (this->State) {
-    case VTKIS_WINDOW_LEVEL:
-        this->FindPokedRenderer(x, y);
-        this->WindowLevel();
-        this->InvokeEvent(vtkCommand::InteractionEvent, NULL);
-        break;
-    case VTKIS_PICK:
-        this->FindPokedRenderer(x, y);
-        this->Pick();
-        this->InvokeEvent(vtkCommand::InteractionEvent, NULL);
-        break;
-    case VTKIS_SLICE:
-        this->FindPokedRenderer(x, y);
-        this->Slice();
-        this->InvokeEvent(vtkCommand::InteractionEvent, NULL);
-        break;
-    }
-    this->Superclass::OnMouseMove();
+void CostumInteractorStyle::setImageViewer(vtkResliceImageViewer *viewer){
+    this->resliceViewer = viewer;
 }
 
-void CostumInteractorStyle::OnLeftButtonDown(){
-    int x = this->Interactor->GetEventPosition()[0];
-    int y = this->Interactor->GetEventPosition()[1];
-    this->FindPokedRenderer(x, y);
-    if(this->CurrentRenderer == NULL){
+void CostumInteractorStyle::Pick(){
+    this->InvokeEvent(vtkCommand::PickEvent, this);
+    vtkSmartPointer<vtkPropPicker> proppicker = vtkSmartPointer<vtkPropPicker>::New();
+    proppicker->PickFromListOn();
+
+    vtkImageActor * imageActor = this->resliceViewer->GetImageActor();
+    proppicker->AddPickList(imageActor);
+    imageActor->InterpolateOff();
+    vtkRenderWindowInteractor * interactor = this->resliceViewer->GetRenderWindow()->GetInteractor();
+    vtkRenderer *renderer = this->resliceViewer->GetRenderer();
+    vtkImageData *image = this->resliceViewer->GetInput();
+
+    proppicker->Pick(interactor->GetEventPosition()[0],
+                     interactor->GetEventPosition()[1],
+                     0.0, renderer);
+    vtkAssemblyPath* path = proppicker->GetPath();
+    bool validPick = false;
+    if(path){
+        vtkCollectionSimpleIterator sit;
+        path->InitTraversal();
+        vtkAssemblyNode* node;
+        for(int i = 0; i < path->GetNumberOfItems() && !validPick; i++){
+            node = path->GetNextNode(sit);
+            if(imageActor == vtkImageActor::SafeDownCast(node->GetViewProp())){
+                validPick = true;
+            }
+        }
+    }
+    if(!validPick){
         return;
     }
-    this->GrabFocus(this->EventCallbackCommand);
-      if (!this->Interactor->GetShiftKey() && !this->Interactor->GetControlKey())
-      {
-        this->WindowLevelStartPosition[0] = x;
-        this->WindowLevelStartPosition[1] = y;
-        this->StartWindowLevel();
-      }
+   double pos[3];
+   proppicker->GetPickPosition(pos);
+   std::cout << pos[0]<< " " << pos[1]<<" "<< pos[2]<<std::endl;
 
-      // If shift is held down, do a rotation
-      else if (this->InteractionMode == VTKIS_IMAGE3D &&
-               this->Interactor->GetShiftKey())
-      {
-        this->StartRotate();
-      }
-
-      // If ctrl is held down in slicing mode, slice the image
-      else if (this->InteractionMode == VTKIS_IMAGE_SLICING &&
-               this->Interactor->GetControlKey())
-      {
-        this->StartSlice();
-      }
-
-
-      // The rest of the button + key combinations remain the same
-
-      else
-      {
-        this->Superclass::OnLeftButtonDown();
-      }
-}
-
-void CostumInteractorStyle::OnLeftButtonUp(){
-    switch (this->State)
-    {
-      case VTKIS_WINDOW_LEVEL:
-        this->EndWindowLevel();
-        if ( this->Interactor )
-        {
-          this->ReleaseFocus();
-        }
-        break;
-
-      case VTKIS_SLICE:
-        this->EndSlice();
-        if ( this->Interactor )
-        {
-          this->ReleaseFocus();
-        }
-        break;
-    }
-
-    // Call parent to handle all other states and perform additional work
-
-    this->Superclass::OnLeftButtonUp();
-}
-
-void CostumInteractorStyle::WindowLevel(){
 
 }
+void CostumInteractorStyle::OnLeftButtonDown(){
+    int x = this->Interactor->GetEventPosition()[0];
+     int y = this->Interactor->GetEventPosition()[1];
 
-void CostumInteractorStyle::StartWindowLevel(){
-    if (this->State != VTKIS_NONE)
+     this->FindPokedRenderer(x, y);
+     if (this->CurrentRenderer == NULL)
      {
        return;
      }
-     this->StartState(VTKIS_WINDOW_LEVEL);//设置状态
 
-     // Get the last (the topmost) image
-     this->SetCurrentImageNumber(this->CurrentImageNumber);
-
-     if (this->HandleObservers &&
-         this->HasObserver(vtkCommand::StartWindowLevelEvent))
+     // Redefine this button to handle window/level
+     this->GrabFocus(this->EventCallbackCommand);
+     if (!this->Interactor->GetShiftKey() && !this->Interactor->GetControlKey())
      {
-       this->InvokeEvent(vtkCommand::StartWindowLevelEvent, this);
+       this->WindowLevelStartPosition[0] = x;
+       this->WindowLevelStartPosition[1] = y;
+//       this->StartWindowLevel();
+         this->StartPick();
      }
+
+     // If shift is held down, do a rotation
+     else if (this->InteractionMode == VTKIS_IMAGE3D &&
+              this->Interactor->GetShiftKey())
+     {
+       this->StartRotate();
+     }
+
+     // If ctrl is held down in slicing mode, slice the image
+     else if (this->InteractionMode == VTKIS_IMAGE_SLICING &&
+              this->Interactor->GetControlKey())
+     {
+       this->StartSlice();
+     }
+
+
+     // The rest of the button + key combinations remain the same
+
      else
      {
-       if (this->CurrentImageProperty)
-       {
-         vtkImageProperty *property = this->CurrentImageProperty;
-         this->WindowLevelInitial[0] = property->GetColorWindow();
-         this->WindowLevelInitial[1] = property->GetColorLevel();
-       }
+       this->Superclass::OnLeftButtonDown();
      }
+
 }
