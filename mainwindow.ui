@@ -44,7 +44,7 @@
           <widget class="QVTKWidget" name="HorizontalWindow"/>
          </item>
          <item>
-          <widget class="QScrollBar" name="verticalScrollBar_5">
+          <widget class="QScrollBar" name="HorizonScrollBar">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -76,12 +76,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>PushButton</string>
+            <string>zoom to fit</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_5">
+          <widget class="QLabel" name="HSliceNum">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -89,7 +89,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string> </string>
            </property>
           </widget>
          </item>
@@ -105,7 +105,7 @@
           <widget class="QVTKWidget" name="SagittalWindow"/>
          </item>
          <item>
-          <widget class="QScrollBar" name="verticalScrollBar_7">
+          <widget class="QScrollBar" name="SagittalScrollBar">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -137,12 +137,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>PushButton</string>
+            <string>zoom to fit</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_7">
+          <widget class="QLabel" name="SSliceNum">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -150,7 +150,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string> </string>
            </property>
           </widget>
          </item>
@@ -164,13 +164,6 @@
         <layout class="QHBoxLayout" name="horizontalLayout_10">
          <item>
           <widget class="QVTKWidget" name="qvtkWidget_6"/>
-         </item>
-         <item>
-          <widget class="QScrollBar" name="verticalScrollBar_6">
-           <property name="orientation">
-            <enum>Qt::Vertical</enum>
-           </property>
-          </widget>
          </item>
         </layout>
        </item>
@@ -198,20 +191,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>PushButton</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QLabel" name="label_6">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="text">
-            <string>TextLabel</string>
+            <string>update</string>
            </property>
           </widget>
          </item>
@@ -227,7 +207,7 @@
           <widget class="QVTKWidget" name="CoronalWindow"/>
          </item>
          <item>
-          <widget class="QScrollBar" name="verticalScrollBar_8">
+          <widget class="QScrollBar" name="CoronalScrollBar">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>
@@ -259,12 +239,12 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>PushButton</string>
+            <string>zoom to fit</string>
            </property>
           </widget>
          </item>
          <item>
-          <widget class="QLabel" name="label_8">
+          <widget class="QLabel" name="CSliceNum">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>0</horstretch>
@@ -272,7 +252,7 @@
             </sizepolicy>
            </property>
            <property name="text">
-            <string>TextLabel</string>
+            <string> </string>
            </property>
           </widget>
          </item>
@@ -333,6 +313,16 @@
       <string>Z</string>
      </property>
     </widget>
+   </widget>
+   <widget class="QTableView" name="tableView">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>200</y>
+      <width>231</width>
+      <height>192</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -6,6 +6,7 @@
 #include <vtkSmartPointer.h>
 #include <vtkRenderWindowInteractor.h>
 #include <vtkEventQtSlotConnect.h>
+#include <vtkImageData.h>
 
 class vtkImageViewer2;
 class vtkResliceImageViewer;
@@ -35,11 +36,18 @@ private slots:
 
     void receiveWindow(float w, float l);
 
-    void showCursorPosition(int x, int y, int z, float* intensity);
+//    void showCursorPosition(int x, int y, int z, float* intensity);
+    void showCursorPosition(vtkObject *);
+    //scall bar
+    void sliceChanged1(int value);
+    void sliceChanged2(int value);
+    void sliceChanged3(int value);
+    void sliceMouseWheelChanged(vtkObject *);
 private:
     Ui::MainWindow *ui;
-
+    vtkSmartPointer<vtkEventQtSlotConnect> connection;
     vtkSmartPointer< vtkResliceImageViewer > m_pImageViewer[3];
+
 };
 
 #endif // MAINWINDOW_H
